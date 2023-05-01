@@ -46,12 +46,27 @@ function skorArtirici() {
 
 const skor1 = skorArtirici();
 
+console.log(skor1());
+console.log(skor1());
+console.log(skor1());
+/*
+yukarıda tanımlanan skor1 bana göre daha güvenli geldi. Fonksiyonun içine tanımlı olan scopeta kaldığı için skor1 i kullanmak daha mantıklı.
+skor 1 de sadece skor değişkeninin değerini sadece fonksiyon çağırarak güncelleyebiliriz. Sadece değeri 1 artar. Fakat skor 2 de hem fonksiyonu
+çağırarak hem de scope içinde herhangi bir yerden güncelleyebiliriz. Kodda var yazmaktan kaçınıyorsak bana göre gerekmedikçe skor 2 de tercih
+edilmemeli.
+*/
 // skor2 kodları
 let skor = 0;
 
 function skor2() {
   return skor++;
 }
+
+
+
+// console.log(skor2());
+// console.log(skor2());
+// console.log(skor2());
 
 
 /* Görev 2: takimSkoru() 
@@ -64,10 +79,10 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
+function takimSkoru(){
+    return Math.floor(Math.random() * 15) + 10;
 }
-
+console.log(takimSkoru());
 
 
 
@@ -86,9 +101,22 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */ 
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(callback, ceyrekSayisi){
+  let evSahibi = 0
+  let konukTakim = 0
+for (let i = 0; i < ceyrekSayisi; i++) {
+ evSahibi = evSahibi + callback()
+  konukTakim = konukTakim + callback()
 }
+return {
+  "EvSahibi" : evSahibi,
+  "KonukTakim" : konukTakim
+
+}
+
+}
+
+console.log(macSonucu(takimSkoru, 4))
 
 
 
@@ -109,11 +137,16 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
-
+function periyotSkoru(callBack) {
+  const evSahibi = callBack()
+  const konukTakim = callBack()
+  return {
+    "EvSahibi": evSahibi,
+    "KonukTakim": konukTakim
+  }
 }
 
+console.log(periyotSkoru(takimSkoru))
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
 Aşağıdaki skorTabelasi() fonksiyonunu kullanarak aşağıdakileri yapınız:
@@ -146,9 +179,25 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(periyotSkoru, takimSkoru, ceyrekSayisi) {
+  let sonuc = []
+  let evSahibi = 0
+  let konukTakim = 0
+  for (let i = 0; i < ceyrekSayisi; i++) {
+    const sonuclar = periyotSkoru(takimSkoru);
+    evSahibi = evSahibi + sonuclar.EvSahibi
+    konukTakim = konukTakim + sonuclar.KonukTakim
+    const periyotSonucu = (i+1) + ". Periyot: Ev Sahibi " + sonuclar.EvSahibi + " - Konuk Takım " + sonuclar.KonukTakim
+    sonuc.push(periyotSonucu);
+    if(i == ceyrekSayisi - 1){
+      const bitis = "Maç Sonucu: Ev Sahibi " + evSahibi + " - Konuk Takım " + konukTakim
+      sonuc.push(bitis)
+    }
+  }
+  return sonuc;
 }
+
+console.log(skorTabelasi(periyotSkoru, takimSkoru, 5))
 
 
 
